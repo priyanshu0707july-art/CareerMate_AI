@@ -1,72 +1,60 @@
-# CareerForge AI
+# CareerMate AI 🚀
 
-Your AI-powered career and interview preparation assistant.
+CareerMate AI is a cutting-edge Generative AI-powered career and interview preparation platform. It helps candidates land jobs by analyzing their resumes against job descriptions, mathematically calculating skill gaps, and putting them through adaptive, AI-driven mock interviews.
 
-## Purpose
-CareerForge AI is a Generative AI-powered career and interview preparation platform that analyzes a candidate's resume against a job description, identifies skill gaps, performs semantic matching using embeddings, and conducts personalized AI mock interviews using RAG.
+## 🌟 Key Features
 
-## Features
-- **Authentication**: JWT-based secure authentication with bcrypt password hashing.
-- **Resumes & Jobs**: Securely upload PDF/DOCX resumes with automatic text parsing and Gemini-powered structured data extraction. Users can also add job descriptions for AI processing.
-- **Match Engine**: AI-powered gap analysis and match scoring (coming soon).
-- **Mock Interviews**: Interactive AI mock interviews tailored to jobs (coming soon).
+1. **Smart Resume Extraction:** Upload your PDF/DOCX resume and Gemini AI mathematically extracts your skills, experience, and education into a structured JSON schema.
+2. **Algorithmic Job Matching:** Paste a Job Description and receive a 100% deterministic, weighted percentage score (40% Skills, 20% Projects, 15% Experience, etc.) alongside visual Matched/Missing grids.
+3. **Adaptive Mock Interviews:** Practice technical and behavioral questions in an interactive chat. The AI evaluates your responses across 4 distinct pillars (Technical Accuracy, Completeness, Clarity, Communication).
+4. **Dynamic Difficulty Scaling:** If you score `> 8.0/10` on a question, the state engine dynamically ramps up the difficulty of the next question. If you struggle (`< 5.0`), it eases up.
+5. **Retrieval-Augmented Generation (RAG):** Uses `pgvector` to store 768-dimensional embeddings of all knowledge chunks to perfectly ground the AI interviewer and prevent hallucinations.
 
-## Architecture
-This project is built using a modern full-stack architecture:
-- **Frontend**: Next.js, TypeScript, and Tailwind CSS. Hosted on Vercel.
-- **Backend**: Python FastAPI, Pydantic, SQLAlchemy. Hosted on Render.
-- **Database**: PostgreSQL with pgvector for vector search. Hosted on Neon or Render.
-- **AI**: Gemini API for generative capabilities and embeddings.
+## 🏗 Architecture
 
-## Tech Stack
-- Frontend: Next.js, TypeScript, Tailwind CSS
-- Backend: Python 3.11+, FastAPI, SQLAlchemy, Pydantic
-- Database: PostgreSQL, pgvector
-- AI: Gemini API
-
-## Local Setup
-
-### Prerequisites
-- Node.js
+**Backend:**
 - Python 3.11+
-- PostgreSQL
+- FastAPI (High-performance Async API)
+- PostgreSQL & SQLAlchemy ORM
+- `pgvector` for Vector Similarity Search (Cosine distance)
+- Google Gemini API (`text-embedding-004`, `gemini-1.5-flash`)
+- `slowapi` (IP-based Rate Limiting)
+- Pytest (Robust Mocking and Fixtures)
 
-### Backend
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Copy `.env.example` to `.env` and fill in your details:
-   ```bash
-   cp .env.example .env
-   ```
-5. Run the development server:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+**Frontend:**
+- Next.js 14+ (App Router)
+- React, TypeScript
+- Tailwind CSS (Utility-first styling)
+- Axios/Fetch Abstraction (JWT Bearer injection)
 
-### Frontend
-1. Navigate to the `frontend` directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+## 🔒 Security Posture
 
-## License
-MIT
+- **Rate Limiting:** Protects expensive LLM routes (`10 requests / min`).
+- **BOLA / IDOR Prevention:** Strict SQLAlchemy queries (`user_id == current_user.id`) ensuring no lateral data access.
+- **Strict File Validation:** Prevents execution of malicious payloads by hard-checking `application/pdf` and `docx` MIME types.
+- **Safe RAG Extraction:** Encapsulates untrusted user text inside isolated XML blocks `<RESUME_TEXT>` to defeat prompt injection techniques.
+
+## 🚀 Getting Started
+
+### 1. Database
+Provision a Postgres instance (e.g. Neon.tech).
+```bash
+CREATE EXTENSION IF NOT EXISTS vector;
+```
+
+### 2. Backend
+```bash
+cd careerforge-ai/backend
+python -m venv venv
+source venv/Scripts/activate
+pip install -r requirements.txt
+# Ensure .env is populated (DATABASE_URL, GEMINI_API_KEY, JWT_SECRET)
+uvicorn app.main:app --reload
+```
+
+### 3. Frontend
+```bash
+cd careerforge-ai/frontend
+npm install
+npm run dev
+```
