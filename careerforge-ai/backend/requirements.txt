@@ -19,3 +19,4 @@ python-docx
 python-multipart
 pgvector
 slowapi
+email-validator 
